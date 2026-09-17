@@ -177,6 +177,10 @@ python3 -m http.server 8085
 
 ## 📝 Changelog
 
+### v1.4.0 – Manual ID Entry Update
+- Changed ID Number input placeholder from *"Enter 11-digit ID number"* to *"Enter ID number"*
+- Removed `maxlength="11"` restriction — ID field now accepts any length to support all ID types (NIN, Int'l Passport, Driver's Licence, Voter's Card, etc.)
+
 ### v1.3.0 – Homepage Cards Redesign
 - Updated balance to `₦0.00` for new users
 - Replaced promo banner with custom wallet photo background
