@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nova Loan App - Figma Mobile Implementation</title>
+  <!-- Google Fonts: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+  <!-- Header Control Bar for Desktop Preview / Screen Selector -->
+  <div class="top-preview-bar">
+    <div class="brand">
+      <div class="brand-logo">N</div>
+      <span>Nova Mobile UI</span>
+    </div>
+    <div class="screen-selector">
+      <button class="screen-tab active" data-screen="screen-dashboard">1. Dashboard</button>
+      <button class="screen-tab" data-screen="screen-eligibility-intro">2. Eligibility</button>
+      <button class="screen-tab" data-screen="screen-step1">3. Step 1 (BVN)</button>
+      <button class="screen-tab" data-screen="screen-step2">4. Step 2 (Capture)</button>
+      <button class="screen-tab" data-screen="screen-step2-manual">5. Step 2 (Manual)</button>
+      <button class="screen-tab" data-screen="screen-step3">6. Step 3 (Selfie)</button>
+      <button class="screen-tab" data-screen="screen-loader">7. Loader</button>
+      <button class="screen-tab" id="btn-toggle-id-error-tab">8. ID Error Modal</button>
+      <button class="screen-tab" data-screen="screen-error">9. Connection Error</button>
+      <button class="screen-tab" data-screen="screen-success">10. Approved!</button>
+    </div>
+    <div class="view-mode-toggle">
+      <button id="toggle-frame-btn" title="Toggle Phone Frame View">📱 Device Frame</button>
+    </div>
+  </div>
+
+  <!-- Main Mobile Canvas Container -->
+  <div class="app-viewport">
+    <div class="mobile-frame">
+      <!-- Status Bar -->
+      <div class="status-bar">
+        <span class="status-time">09:41</span>
+        <div class="status-icons">
+          <!-- Signal Icon -->
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor">
+            <rect x="0" y="8" width="3" height="3" rx="0.5"/>
+            <rect x="4.5" y="5.5" width="3" height="5.5" rx="0.5"/>
+            <rect x="9" y="3" width="3" height="8" rx="0.5"/>
+            <rect x="13.5" y="0" width="3" height="11" rx="0.5"/>
+          </svg>
+          <!-- Wifi Icon -->
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor">
+            <path d="M8 9.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/>
+            <path d="M4.5 7.5a5 5 0 017 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <path d="M2 4.5a8.5 8.5 0 0112 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <path d="M0 1.8a12 12 0 0116 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          </svg>
+          <!-- Battery Icon -->
+          <svg width="22" height="11" viewBox="0 0 22 11" fill="none" stroke="currentColor">
+            <rect x="0.75" y="0.75" width="18" height="9.5" rx="2.25" stroke-width="1.5"/>
+            <rect x="2.5" y="2.5" width="12" height="6" rx="1" fill="currentColor"/>
+            <path d="M20 4v3" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- APP SCREENS CONTAINER -->
+      <div class="screens-wrapper">
+
+        <!-- ==================== SCREEN 1: HOMEPAGE / DASHBOARD ==================== -->
+        <section id="screen-dashboard" class="app-screen active">
+          <div class="screen-content pad-bottom-xl">
+            <!-- Header User Bar -->
+            <div class="dash-header">
+              <div class="user-info">
+                <img class="avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Amos Abu">
+                <div class="user-text">
+                  <span class="greeting">Hello,</span>
+                  <span class="user-name">Amos Abu</span>
+                </div>
+              </div>
+              <button class="icon-btn bell-btn" aria-label="Notifications">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#022E64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Primary Blue Card (Exact match to reference design with ₦0.00 for new user) -->
+            <div class="balance-card">
+              <!-- Top-Right Rotated Card Watermark with 3D Naira Symbol -->
+              <div class="card-naira-watermark">
+                <div class="watermark-inner-card">
+                  <span class="watermark-naira">₦</span>
+                </div>
+              </div>
+
+              <!-- Centered Balance Info -->
+              <div class="balance-content-centered">
+                <span class="balance-label">Available Balance</span>
+                <div class="balance-amount-row justify-center">
+                  <span class="currency-symbol">₦</span>
+                  <span id="balance-val" class="balance-value">0.00</span>
+                  <button id="toggle-balance-eye" class="eye-btn" aria-label="Toggle balance display">
+                    <svg id="eye-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                      <line x1="1" y1="1" x2="23" y2="23"></line>
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="account-num-block text-center">
+                  <span class="account-label">ACCOUNT NUMBER</span>
+                  <span class="account-val">0123456789</span>
+                </div>
+              </div>
+
+              <div class="card-actions-row">
+                <button class="card-action-btn btn-add-money">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                  Add Money
+                </button>
+                <button class="card-action-btn btn-transfer">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                  Transfer
+                </button>
+              </div>
+            </div>
+
+            <!-- Products Grid (4 Icons) - NovaLend is Clickable! -->
+            <div class="products-grid">
+              <div class="product-item">
+                <div class="product-icon-box icon-wallet">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#022E64" stroke-width="2">
+                    <rect x="2" y="5" width="20" height="14" rx="3"></rect>
+                    <line x1="2" y1="10" x2="22" y2="10"></line>
+                  </svg>
+                </div>
+                <span class="product-name">NovaWallet</span>
+              </div>
+
+              <div class="product-item">
+                <div class="product-icon-box icon-save">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E0AD0F" stroke-width="2">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                    <polyline points="7 3 7 8 15 8"></polyline>
+                  </svg>
+                </div>
+                <span class="product-name">NovaSave</span>
+              </div>
+
+              <!-- NovaLend Clickable Element -->
+              <div class="product-item nav-to-eligibility">
+                <div class="product-icon-box icon-lend">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6D28D9" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                    <path d="M9 3v18"></path>
+                    <path d="M14 9h3"></path>
+                    <path d="M14 15h3"></path>
+                  </svg>
+                </div>
+                <span class="product-name">NovaLend</span>
+              </div>
+
+              <div class="product-item">
+                <div class="product-icon-box icon-biz">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                  </svg>
+                </div>
+                <span class="product-name">NovaBiz</span>
+              </div>
+            </div>
+
+            <!-- Promo Banner Card (Exact Replica of attached card) -->
+            <div class="loan-promo-banner">
+              <div class="banner-content">
+                <h3 class="banner-title">Need extra cash?</h3>
+                <p class="banner-desc">Check what you may be eligible to borrow. No commitment required.</p>
+                <button class="btn-check-eligibility nav-to-eligibility">
+                  Check Eligibility
+                </button>
+              </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="recent-activity-section">
+              <div class="section-header">
+                <div>
+                  <h3 class="section-title">Recent Activity</h3>
+                  <span class="section-subtitle">Last 7 days overview</span>
+                </div>
+                <a href="#" class="see-all-link">See all</a>
+              </div>
+
+              <div class="activity-list">
+                <div class="activity-item">
+                  <div class="activity-icon icon-deposit">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5">
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <polyline points="19 12 12 19 5 12"></polyline>
+                    </svg>
+                  </div>
+                  <div class="activity-details">
+                    <span class="activity-title">Salary</span>
+                    <span class="activity-meta">Today · Direct Deposit</span>
+                  </div>
+                  <div class="activity-amount-col">
+                    <span class="activity-amount positive">+₦250,000.00</span>
+                    <span class="activity-status">Completed</span>
+                  </div>
+                </div>
+
+                <div class="activity-item">
+                  <div class="activity-icon icon-uber">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#022E64" stroke-width="2">
+                      <rect x="3" y="11" width="18" height="8" rx="2"></rect>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                  </div>
+                  <div class="activity-details">
+                    <span class="activity-title">Uber</span>
+                    <span class="activity-meta">Yesterday · Transport</span>
+                  </div>
+                  <div class="activity-amount-col">
+                    <span class="activity-amount negative">-₦8,500.00</span>
+                    <span class="activity-status">Debit Card</span>
+                  </div>
+                </div>
+
+                <div class="activity-item">
+                  <div class="activity-icon icon-airtime">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E0AD0F" stroke-width="2">
+                      <rect x="5" y="2" width="14" height="20" rx="3"></rect>
+                      <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                    </svg>
+                  </div>
+                  <div class="activity-details">
+                    <span class="activity-title">MTN Airtime</span>
+                    <span class="activity-meta">Yesterday · 0803 ••• 1942</span>
+                  </div>
+                  <div class="activity-amount-col">
+                    <span class="activity-amount negative">-₦2,000.00</span>
+                    <span class="activity-status">Instant Topup</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ==================== SCREEN 2: CHECK LOAN ELIGIBILITY ==================== -->
+        <section id="screen-eligibility-intro" class="app-screen">
+          <div class="screen-content pad-bottom-lg">
+            <div class="screen-top-bar">
+              <button class="back-btn nav-to-dash" aria-label="Go back">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+              </button>
+            </div>
+
+            <div class="screen-heading-group text-center">
+              <h1 class="page-title">Check Your Loan Eligibility</h1>
+              <p class="page-subtitle">Find out how much you can borrow in less than <strong class="text-primary">3 minutes</strong>.<br>No commitment required.</p>
+            </div>
+
+            <div class="info-card-container">
+              <h2 class="card-header-title">What You Need To Do</h2>
+
+              <div class="white-card steps-card">
+                <div class="requirement-row">
+                  <div class="req-icon-box">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E0AD0F" stroke-width="2">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                      <line x1="12" y1="8" x2="12" y2="12"></line>
+                      <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                  </div>
+                  <div class="req-text">
+                    <h3 class="req-title">Verify Your BVN</h3>
+                    <p class="req-desc">We check using your linked FirstBank account profile.</p>
+                  </div>
+                </div>
+
+                <div class="requirement-row">
+                  <div class="req-icon-box">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E0AD0F" stroke-width="2">
+                      <rect x="3" y="4" width="18" height="16" rx="3"></rect>
+                      <circle cx="9" cy="10" r="2"></circle>
+                      <line x1="15" y1="8" x2="19" y2="8"></line>
+                      <line x1="15" y1="12" x2="19" y2="12"></line>
+                      <line x1="7" y1="16" x2="17" y2="16"></line>
+                    </svg>
+                  </div>
+                  <div class="req-text">
+                    <h3 class="req-title">Upload a Valid ID</h3>
+                    <p class="req-desc">NIN, Voter's Card, Passport, etc.</p>
+                  </div>
+                </div>
+
+                <div class="requirement-row">
+                  <div class="req-icon-box">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E0AD0F" stroke-width="2">
+                      <rect x="5" y="2" width="14" height="20" rx="3"></rect>
+                      <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                    </svg>
+                  </div>
+                  <div class="req-text">
+                    <h3 class="req-title">Take a Quick Selfie</h3>
+                    <p class="req-desc">To confirm it's indeed you</p>
+                  </div>
+                </div>
+
+                <div class="yellow-tip-box">
+                  <div class="tip-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#022E64" stroke-width="2">
+                      <path d="M9 18h6"></path>
+                      <path d="M10 22h4"></path>
+                      <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1.55.59 2.96 1.5 4 .76.76 1.23 1.52 1.41 2.5"></path>
+                    </svg>
+                  </div>
+                  <div class="tip-content">
+                    <h4 class="tip-title">Why this is needed</h4>
+                    <p class="tip-body">We use this check to protect your account and make sure any offer is linked to you.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="security-footnote">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <span>Your data is encrypted & secured by CBN regulations</span>
+            </div>
+
+            <div class="cta-container">
+              <button class="btn-primary-pill nav-to-step1">
+                Get Started
+              </button>
+              <p class="sub-cta-text">
+                Already started? <a href="#" class="nav-to-step1 bold-link">Continue where you left off</a>
+              </p>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ==================== SCREEN 3: STEP 1 OF 3 (IDENTITY) ==================== -->
+        <section id="screen-step1" class="app-screen">
+          <div class="screen-content pad-bottom-lg">
+            <div class="screen-top-bar flex-between">
+              <button class="back-btn nav-to-eligibility" aria-label="Go back">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+              </button>
+            </div>
+
+            <div class="step-header-info">
+              <div class="step-meta">
+                <span class="step-counter">Step 1 of 3</span>
+                <span class="step-time">3 mins left</span>
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-segment active"></div>
+                <div class="progress-segment"></div>
+                <div class="progress-segment"></div>
+              </div>
+            </div>
+
+            <h1 class="page-title left-align margin-top-md">Let’s confirm your identity</h1>
+
+            <div class="blue-advantage-card">
+              <div class="advantage-badge">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#022E64" stroke="none">
+                  <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-5.45 9-12V7l-9-5z"/>
+                  <path d="M10 15.5l-3.5-3.5 1.41-1.41L10 12.67l6.09-6.09L17.5 8z" fill="#FFFFFF"/>
+                </svg>
+                <span>FIRSTBANK ADVANTAGE ACTIVATED</span>
+              </div>
+              <p class="advantage-text">
+                Because your BVN is already verified with FirstBank, we have automatically pre-filled 35% of your profile
+              </p>
+            </div>
+
+            <div class="white-card details-card">
+              <div class="card-header-flex">
+                <h3 class="card-section-title">Pre-Filled BVN Details</h3>
+                <div class="verified-badge-pill">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#022E64" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                  <span>BVN Verified</span>
+                </div>
+              </div>
+
+              <div class="bvn-fields-list">
+                <div class="bvn-field-item">
+                  <div class="field-icon-bg">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E0AD0F" stroke-width="2">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                  </div>
+                  <div class="field-content">
+                    <span class="field-label">Full Legal Name</span>
+                    <span class="field-val">Amos Abu</span>
+                  </div>
+                  <div class="check-circle-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5">
+                      <circle cx="12" cy="12" r="9"></circle>
+                      <polyline points="9 12 11 14 15 10"></polyline>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="bvn-field-item">
+                  <div class="field-icon-bg">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E0AD0F" stroke-width="2">
+                      <rect x="3" y="2" width="18" height="20" rx="3"></rect>
+                      <line x1="9" y1="6" x2="15" y2="6"></line>
+                      <line x1="9" y1="10" x2="15" y2="10"></line>
+                      <line x1="9" y1="14" x2="15" y2="14"></line>
+                    </svg>
+                  </div>
+                  <div class="field-content">
+                    <span class="field-label">Phone Number</span>
+                    <span class="field-val">08123456789</span>
+                  </div>
+                  <div class="check-circle-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5">
+                      <circle cx="12" cy="12" r="9"></circle>
+                      <polyline points="9 12 11 14 15 10"></polyline>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="bvn-field-item">
+                  <div class="field-icon-bg">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E0AD0F" stroke-width="2">
+                      <circle cx="12" cy="7" r="4"></circle>
+                      <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"></path>
+                    </svg>
+                  </div>
+                  <div class="field-content">
+                    <span class="field-label">Gender</span>
+                    <span class="field-val">Male</span>
+                  </div>
+                  <div class="check-circle-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5">
+                      <circle cx="12" cy="12" r="9"></circle>
+                      <polyline points="9 12 11 14 15 10"></polyline>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="yellow-tip-box margin-top-md">
+              <div class="tip-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#022E64" stroke-width="2">
+                  <path d="M9 18h6"></path>
+                  <path d="M10 22h4"></path>
+                  <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1.55.59 2.96 1.5 4 .76.76 1.23 1.52 1.41 2.5"></path>
+                </svg>
+              </div>
+              <div class="tip-content">
+                <h4 class="tip-title">Why your ID is still needed</h4>
+                <p class="tip-body">Your BVN confirms your existing record. We also need to verify the government ID used for this loan application.</p>
+              </div>
+            </div>
+
+            <div class="cta-container margin-top-lg">
+              <button class="btn-primary-pill nav-to-step2">
+                Continue
+              </button>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ==================== SCREEN 4: STEP 2 OF 3 (CAPTURE ID & REVIEW STATES) ==================== -->
+        <section id="screen-step2" class="app-screen">
+          <div class="screen-content pad-bottom-lg flex-col justify-between">
+
+            <!-- Sub-State 1: Live Viewfinder Scan -->
+            <div id="id-capture-live-state" class="id-state-block">
+              <div>
+                <div class="screen-top-bar flex-between">
+                  <button class="back-btn nav-to-step1" aria-label="Go back">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="19" y1="12" x2="5" y2="12"></line>
+                      <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="step-header-info">
+                  <div class="step-meta">
+                    <span class="step-counter">Step 2 of 3</span>
+                    <span class="step-time">2 mins left</span>
+                  </div>
+                  <div class="progress-bar-container">
+                    <div class="progress-segment active"></div>
+                    <div class="progress-segment active"></div>
+                    <div class="progress-segment"></div>
+                  </div>
+                </div>
+
+                <h1 class="page-title left-align margin-top-md">Capture Your ID</h1>
+
+                <div class="camera-frame-card">
+                  <div class="corner-guide top-left"></div>
+                  <div class="corner-guide top-right"></div>
+                  <div class="corner-guide bottom-left"></div>
+                  <div class="corner-guide bottom-right"></div>
+
+                  <div class="id-card-mockup">
+                    <div class="id-card-header">
+                      <div class="coat-of-arms">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#E0AD0F">
+                          <circle cx="12" cy="12" r="10"></circle>
+                        </svg>
+                      </div>
+                      <div class="id-country-title">
+                        <span class="country-name">FEDERAL REPUBLIC OF NIGERIA</span>
+                        <span class="card-name">NATIONAL IDENTITY CARD</span>
+                      </div>
+                    </div>
+
+                    <div class="id-card-body">
+                      <div class="id-photo-container">
+                        <img class="id-user-photo" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Amos Osaze Abu">
+                      </div>
+
+                      <div class="id-fields-col">
+                        <div class="id-field">
+                          <span class="id-field-label">SURNAME / NOM</span>
+                          <span class="id-field-val">Abu</span>
+                        </div>
+
+                        <div class="id-field">
+                          <span class="id-field-label">GIVEN NAMES / PRÉNOMS</span>
+                          <span class="id-field-val">Amos Osaze</span>
+                        </div>
+
+                        <div class="id-field flex-row">
+                          <div>
+                            <span class="id-field-label">DATE OF BIRTH</span>
+                            <span class="id-field-val">9 SEP 2000</span>
+                          </div>
+                          <div>
+                            <span class="id-field-label">SEX</span>
+                            <span class="id-field-val">M</span>
+                          </div>
+                        </div>
+
+                        <div class="id-field">
+                          <span class="id-field-label">NIN: 8122 123 0123</span>
+                        </div>
+                      </div>
+
+                      <div class="id-qr-col">
+                        <div class="qr-box">
+                          <svg width="46" height="46" viewBox="0 0 24 24" fill="#1F2937">
+                            <path d="M2 2h8v8H2V2zm2 2v4h4V4H4zm9-2h8v8h-8V2zm2 2v4h4V4h-4zM2 14h8v8H2v-8zm2 2v4h4v-4H4zm11-2h2v2h-2v-2zm-2 2h2v2h-2v-2zm4 0h2v2h-2v-2zm-2 2h2v2h-2v-2zm2 2h2v2h-2v-2zm-4 0h2v2h-2v-2z"/>
+                          </svg>
+                        </div>
+                        <div class="nimc-seal">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="#E0AD0F">
+                            <circle cx="12" cy="12" r="10"/>
+                          </svg>
+                          <span>NIMC Verified</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="blue-info-box margin-top-md">
+                  <div class="info-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#022E64" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="16" x2="12" y2="12"></line>
+                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                  </div>
+                  <p class="info-text">
+                    Position your NIN Slip, Driver’s License, International Passport, or Voter’s Card inside the frame. Avoid glare or heavy shadows
+                  </p>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="cta-container flex-col gap-sm margin-top-xl">
+                <button id="btn-capture-id" class="btn-primary-pill">
+                  Capture ID
+                </button>
+                <button class="btn-secondary-soft-pill nav-to-step2-manual">
+                  Enter ID Manually
+                </button>
+              </div>
+            </div>
+
+            <!-- Sub-State 2: Scanned ID Review Screen -->
+            <div id="id-capture-review-state" class="id-state-block hidden">
+              <div>
+                <div class="screen-top-bar flex-between">
+                  <button id="btn-id-review-back" class="back-btn" aria-label="Go back">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="19" y1="12" x2="5" y2="12"></line>
+                      <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="step-header-info">
+                  <div class="step-meta">
+                    <span class="step-counter">Step 2 of 3</span>
+                    <span class="step-time">2 mins left</span>
+                  </div>
+                  <div class="progress-bar-container">
+                    <div class="progress-segment active"></div>
+                    <div class="progress-segment active"></div>
+                    <div class="progress-segment"></div>
+                  </div>
+                </div>
+
+                <h1 class="page-title left-align margin-top-md">Capture Your ID</h1>
+
+                <div class="camera-frame-card margin-top-md">
+                  <div class="corner-guide top-left"></div>
+                  <div class="corner-guide top-right"></div>
+                  <div class="corner-guide bottom-left"></div>
+                  <div class="corner-guide bottom-right"></div>
+
+                  <div class="id-card-mockup">
+                    <div class="id-card-header">
+                      <div class="coat-of-arms">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#E0AD0F">
+                          <circle cx="12" cy="12" r="10"></circle>
+                        </svg>
+                      </div>
+                      <div class="id-country-title">
+                        <span class="country-name">FEDERAL REPUBLIC OF NIGERIA</span>
+                        <span class="card-name">NATIONAL IDENTITY CARD</span>
+                      </div>
+                    </div>
+
+                    <div class="id-card-body">
+                      <div class="id-photo-container">
+                        <img class="id-user-photo" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Amos Osaze Abu">
+                      </div>
+
+                      <div class="id-fields-col">
+                        <div class="id-field">
+                          <span class="id-field-label">SURNAME / NOM</span>
+                          <span class="id-field-val">Abu</span>
+                        </div>
+
+                        <div class="id-field">
+                          <span class="id-field-label">GIVEN NAMES / PRÉNOMS</span>
+                          <span class="id-field-val">Amos Osaze</span>
+                        </div>
+
+                        <div class="id-field flex-row">
+                          <div>
+                            <span class="id-field-label">DATE OF BIRTH</span>
+                            <span class="id-field-val">9 SEP 2000</span>
+                          </div>
+                          <div>
+                            <span class="id-field-label">SEX</span>
+                            <span class="id-field-val">M</span>
+                          </div>
+                        </div>
+
+                        <div class="id-field">
+                          <span class="id-field-label">NIN: 8122 123 0123</span>
+                        </div>
+                      </div>
+
+                      <div class="id-qr-col">
+                        <div class="qr-box">
+                          <svg width="46" height="46" viewBox="0 0 24 24" fill="#1F2937">
+                            <path d="M2 2h8v8H2V2zm2 2v4h4V4H4zm9-2h8v8h-8V2zm2 2v4h4V4h-4zM2 14h8v8H2v-8zm2 2v4h4v-4H4zm11-2h2v2h-2v-2zm-2 2h2v2h-2v-2zm4 0h2v2h-2v-2zm-2 2h2v2h-2v-2zm2 2h2v2h-2v-2zm-4 0h2v2h-2v-2z"/>
+                          </svg>
+                        </div>
+                        <div class="nimc-seal">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="#E0AD0F">
+                            <circle cx="12" cy="12" r="10"/>
+                          </svg>
+                          <span>NIMC Verified</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <p class="review-instruction margin-top-md">
+                  Make sure your ID is inside the frame.
+                </p>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="cta-container flex-col gap-sm margin-top-lg">
+                <button id="btn-id-review-continue" class="btn-primary-pill">
+                  Looks great! Continue
+                </button>
+                <button id="btn-id-review-retake" class="btn-secondary-soft-pill">
+                  Retake
+                </button>
+                <p class="sub-cta-text">
+                  Camera not clear? <a href="#" class="nav-to-step2-manual bold-link">Type ID Number instead</a>
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+
+        <!-- ==================== SCREEN 5: MANUAL ID ENTRY ==================== -->
+        <section id="screen-step2-manual" class="app-screen">
+          <div class="screen-content pad-bottom-lg">
+            <div class="screen-top-bar flex-between">
+              <button class="back-btn nav-to-step2" aria-label="Go back">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+              </button>
+            </div>
+
+            <div class="step-header-info">
+              <div class="step-meta">
+                <span class="step-counter">Step 2 of 3</span>
+                <span class="step-time">2 mins left</span>
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-segment active"></div>
+                <div class="progress-segment active"></div>
+                <div class="progress-segment"></div>
+              </div>
+            </div>
+
+            <h1 class="page-title left-align margin-top-md">Enter ID Details Manually</h1>
+
+            <div class="white-card margin-top-md">
+              <div class="form-group">
+                <label class="input-label">ID Type</label>
+                <div class="select-wrapper">
+                  <select id="manual-id-type" class="styled-input styled-select">
+                    <option value="" disabled selected>Select an option</option>
+                    <option value="NIN">NIN</option>
+                    <option value="DRIVERS_LICENSE">Driver's License</option>
+                    <option value="PASSPORT">International Passport</option>
+                    <option value="VOTERS_CARD">Voter's Card</option>
+                  </select>
+                  <div class="select-chevron">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="input-label">ID Number</label>
+                <input id="manual-id-number" type="text" maxlength="11" class="styled-input" placeholder="Enter 11-digit ID number">
+              </div>
+
+              <div id="manual-loading" class="fetching-row hidden">
+                <div class="spinner-ring"></div>
+                <span class="fetching-text">Fetching details...</span>
+              </div>
+
+              <div id="manual-fetched-fields" class="fetched-fields-group hidden">
+                <div class="form-group">
+                  <label class="input-label">Full Name (As shown on ID)</label>
+                  <input type="text" class="styled-input readonly-input" value="Amos Osaze Abu" readonly>
+                </div>
+
+                <div class="form-group">
+                  <label class="input-label">Date of Birth</label>
+                  <input type="text" class="styled-input readonly-input" value="09/09/2000" readonly>
+                </div>
+
+                <div class="form-group">
+                  <label class="input-label">Issue Date</label>
+                  <input type="text" class="styled-input readonly-input" value="07/05/2024" readonly>
+                </div>
+
+                <div class="form-group">
+                  <label class="input-label">Expiry Date</label>
+                  <input type="text" class="styled-input readonly-input" value="07/05/2034" readonly>
+                </div>
+              </div>
+            </div>
+
+            <div class="yellow-tip-box margin-top-md">
+              <div class="tip-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#022E64" stroke-width="2">
+                  <path d="M9 18h6"></path>
+                  <path d="M10 22h4"></path>
+                  <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1.55.59 2.96 1.5 4 .76.76 1.23 1.52 1.41 2.5"></path>
+                </svg>
+              </div>
+              <div class="tip-content">
+                <h4 class="tip-title">Don’t know your NIN?</h4>
+                <p class="tip-body">Dial *346# on your registered sim. (N20 network charge applies),</p>
+              </div>
+            </div>
+
+            <div class="cta-container margin-top-lg">
+              <button id="btn-manual-confirm" class="btn-primary-pill nav-to-step3" disabled>
+                Confirm & Continue
+              </button>
+              <p class="sub-cta-text">
+                <a href="#" class="nav-to-step2 bold-link">Switch back to camera capture</a>
+              </p>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ==================== SCREEN 6: STEP 3 OF 3 (FACIAL VERIFICATION / SELFIE) ==================== -->
+        <section id="screen-step3" class="app-screen">
+          <div class="screen-content pad-bottom-lg flex-col justify-between relative">
+
+            <!-- Animated Success Toast Notification Banner -->
+            <div id="success-toast" class="toast-card">
+              <div class="toast-left-border"></div>
+              <div class="toast-icon-circle">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <div class="toast-text-col">
+                <h4 class="toast-title">Verification Successful!</h4>
+                <p class="toast-subtitle">Congratulations! Your ID has been verified.</p>
+              </div>
+            </div>
+
+            <!-- Sub-State 1: Face Alignment Viewfinder -->
+            <div id="selfie-viewfinder-state" class="selfie-state-block">
+              <div>
+                <div class="screen-top-bar flex-between">
+                  <button class="back-btn nav-to-step2" aria-label="Go back">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="19" y1="12" x2="5" y2="12"></line>
+                      <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="step-header-info">
+                  <div class="step-meta">
+                    <span class="step-counter">Step 3 of 3</span>
+                    <span class="step-time">60 secs left</span>
+                  </div>
+                  <div class="progress-bar-container">
+                    <div class="progress-segment active"></div>
+                    <div class="progress-segment active"></div>
+                    <div class="progress-segment active"></div>
+                  </div>
+                </div>
+
+                <h1 class="page-title left-align margin-top-md">Take a Quick Selfie</h1>
+
+                <div class="selfie-viewfinder-container">
+                  <div class="face-oval-frame">
+                    <img class="face-oval-photo" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="Selfie face">
+                    <div id="arc-top" class="arc-bracket arc-top"></div>
+                    <div id="arc-bottom" class="arc-bracket arc-bottom"></div>
+                    <div id="arc-left" class="arc-bracket arc-left"></div>
+                    <div id="arc-right" class="arc-bracket arc-right"></div>
+                  </div>
+                  <p id="selfie-instruction" class="viewfinder-instruction">Ensure good lighting</p>
+                </div>
+              </div>
+
+              <div class="cta-container flex-col gap-sm margin-top-lg">
+                <button id="btn-take-selfie" class="btn-primary-pill" disabled>
+                  Take Selfie
+                </button>
+                <p class="sub-cta-text">
+                  Busy right now? <a href="#" class="nav-to-dash bold-link">Save & continue later</a>
+                </p>
+              </div>
+            </div>
+
+            <!-- Sub-State 2: Captured Selfie Photo Review Card -->
+            <div id="selfie-review-state" class="selfie-state-block hidden">
+              <div>
+                <div class="screen-top-bar flex-between">
+                  <button id="btn-retake-back" class="back-btn" aria-label="Go back">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="19" y1="12" x2="5" y2="12"></line>
+                      <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="step-header-info">
+                  <div class="step-meta">
+                    <span class="step-counter">Step 3 of 3</span>
+                    <span class="step-time">60 secs left</span>
+                  </div>
+                  <div class="progress-bar-container">
+                    <div class="progress-segment active"></div>
+                    <div class="progress-segment active"></div>
+                    <div class="progress-segment active"></div>
+                  </div>
+                </div>
+
+                <h1 class="page-title left-align margin-top-md">Take a Quick Selfie</h1>
+
+                <div class="captured-selfie-card">
+                  <img class="captured-selfie-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="Captured selfie preview">
+                </div>
+
+                <p class="review-instruction">
+                  Please make sure your face is not blurred or out of frame before continuing.
+                </p>
+              </div>
+
+              <div class="cta-container flex-col gap-sm margin-top-lg">
+                <button id="btn-selfie-review-continue" class="btn-primary-pill">
+                  Looks great! Continue
+                </button>
+                <button id="btn-retake-selfie" class="btn-secondary-soft-pill">
+                  Take a new selfie
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+
+        <!-- ==================== SCREEN 7: FULL SCREEN "JUST A MOMENT..." LOADER ==================== -->
+        <section id="screen-loader" class="app-screen">
+          <div class="screen-content pad-bottom-lg flex-center-all">
+            <div class="loader-center-block text-center">
+              <div class="loader-gradient-spinner"></div>
+              <p class="loader-text margin-top-md">Just a moment...</p>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ==================== SCREEN 8: POOR CONNECTION ERROR SCREEN ==================== -->
+        <section id="screen-error" class="app-screen">
+          <div class="screen-content pad-bottom-lg justify-between text-center">
+            <div class="error-center-block margin-top-lg">
+              <div class="warning-circle-badge">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E0AD0F" stroke-width="2.5">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+              </div>
+
+              <h1 class="page-title margin-top-md">Poor Connection!</h1>
+              <p class="page-subtitle max-w-sm center-margin">
+                Your internet connection is slow. We've saved your completed steps so you won't have to start again.
+              </p>
+
+              <div class="white-card margin-top-lg text-left">
+                <div class="status-check-row">
+                  <span class="status-check-label">BVN Verification</span>
+                  <div class="status-check-icon icon-success">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="status-check-row">
+                  <span class="status-check-label">ID Document</span>
+                  <div class="status-check-icon icon-success">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="status-check-row">
+                  <span class="status-check-label">Selfie Match</span>
+                  <span class="status-waiting-text">Waiting</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="cta-container flex-col gap-sm margin-top-lg">
+              <button class="btn-primary-pill nav-to-step3">
+                Try Again
+              </button>
+              <button class="btn-secondary-soft-pill nav-to-dash">
+                Continue Later
+              </button>
+
+              <p class="sub-footnote-text">
+                We'll use a smaller upload to reduce data usage.
+              </p>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ==================== SCREEN 9: VERIFICATION APPROVED SUCCESS SCREEN ==================== -->
+        <section id="screen-success" class="app-screen">
+          <div class="screen-content pad-bottom-lg justify-between text-center">
+            <div class="success-center-block margin-top-lg">
+              <div class="success-header-card">
+                <div class="starburst-seal">
+                  <svg width="44" height="44" viewBox="0 0 24 24" fill="#E0AD0F">
+                    <path d="M12 2l2.4 2.8 3.7-.8.5 3.7 3.4 1.6-1.5 3.4 1.5 3.4-3.4 1.6-.5 3.7-3.7-.8L12 22l-2.4-2.8-3.7.8-.5-3.7-3.4-1.6 1.5-3.4-1.5-3.4 3.4-1.6.5-3.7 3.7.8z"/>
+                  </svg>
+                  <div class="seal-check">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#022E64" stroke-width="3">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                </div>
+
+                <h1 class="success-title">Verification Approved!</h1>
+                <p class="success-subtitle">
+                  Congratulations, You're now eligible for an instant credit.
+                </p>
+              </div>
+
+              <div class="white-card margin-top-lg text-left">
+                <div class="status-check-row">
+                  <span class="status-check-label">BVN Verification</span>
+                  <div class="status-check-icon icon-success">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="status-check-row">
+                  <span class="status-check-label">ID Document</span>
+                  <div class="status-check-icon icon-success">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="status-check-row">
+                  <span class="status-check-label">Selfie Match</span>
+                  <div class="status-check-icon icon-success">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="cta-container flex-col gap-sm margin-top-lg">
+              <button class="btn-primary-pill nav-to-dash">
+                See my loan options
+              </button>
+              <button class="btn-secondary-soft-pill nav-to-dash">
+                Go to Homepage
+              </button>
+            </div>
+          </div>
+        </section>
+
+      </div> <!-- /screens-wrapper -->
+
+      <!-- ==================== "WE COULDN'T READ YOUR ID" ERROR MODAL BOTTOM SHEET ==================== -->
+      <div id="id-error-modal" class="modal-backdrop hidden">
+        <div class="modal-bottom-sheet">
+          <div class="modal-handle-bar"></div>
+          <div class="modal-icon-circle-red">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2.5">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+          </div>
+
+          <h3 class="modal-title">We couldn't read your ID</h3>
+          <p class="modal-body">
+            Check the corners and lighting, then try again or enter the details manually.
+          </p>
+
+          <div class="cta-container flex-col gap-sm margin-top-lg width-full">
+            <button id="btn-modal-retake" class="btn-primary-pill">
+              Retake
+            </button>
+            <button id="btn-modal-manual" class="btn-secondary-soft-pill">
+              Enter ID Manually
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Persistent Static Bottom Navigation Bar (Visible ONLY on Homepage) -->
+      <nav id="app-bottom-nav" class="bottom-nav">
+        <button class="nav-item active nav-to-dash">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M10.707 2.293a1 1 0 0 1 1.414 0l9 9A1 1 0 0 1 20 13h-1v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7H4a1 1 0 0 1-.707-1.707l9-9z"/>
+          </svg>
+          <span>Home</span>
+        </button>
+        <button class="nav-item">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+            <line x1="2" y1="10" x2="22" y2="10"></line>
+          </svg>
+          <span>Payments</span>
+        </button>
+        <button class="nav-item">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span>Activity</span>
+        </button>
+        <button class="nav-item">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span>Profile</span>
+        </button>
+      </nav>
+
+    </div> <!-- /mobile-frame -->
+  </div> <!-- /app-viewport -->
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
