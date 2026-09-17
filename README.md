@@ -4,6 +4,15 @@ A high-fidelity mobile web application built to match Figma designs pixel-perfec
 
 ---
 
+## 🔗 Live Preview
+
+> **Share this link with testers:**
+> ### 👉 [https://sazzy97.github.io/NovaLend/](https://sazzy97.github.io/NovaLend/)
+
+Works best on mobile or in a browser window resized to ~390px wide. For the best experience on desktop, use Chrome DevTools → Toggle Device Toolbar (or press `Ctrl+Shift+M` / `Cmd+Shift+M`).
+
+---
+
 ## 🎨 Design System
 
 | Token | Value |
